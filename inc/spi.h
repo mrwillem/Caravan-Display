@@ -14,7 +14,7 @@
 #define SPI_BLOCK_LCD_WRITE_REG 3
 #define SPI_BLOCK_LCD_WRITE_RAM 2
 
-extern volatile uint8_t SPI1_BLOCK;
+extern volatile uint8_t GL_spi1_block;
 
 #ifdef _USE_SPI_FLASH
 #define SPI_BLOCK_FLASH_WRITE 4

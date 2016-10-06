@@ -83,8 +83,8 @@ uint8_t rtc_init(void)
 	rtc_date.weekday = 0;
 	rtc_date.year = 0;
 
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	Buffer_Tx2[0]=0x0E;
 	I2C_Master_BufferWrite(I2C2, databuffer, 1, I2C_RTC_ADDRESS_WRITE);
 	I2C_Master_BufferRead(I2C2, databuffer,5, I2C_RTC_ADDRESS_READ);
@@ -95,7 +95,7 @@ uint8_t rtc_init(void)
 		//EOSC Set
 		I2C_Master_BufferWrite(I2C2, databuffer, 2, I2C_RTC_ADDRESS_WRITE);
 	}
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 	init_rtc = 1;
 	rtc_read();
 
@@ -112,8 +112,8 @@ uint8_t rtc_init(void)
  */
 void rtc_enable(uint8_t e)
 {
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	uint8_t second = rtc_read_ram(0x00);
 	if (e == 1)
 	{
@@ -135,7 +135,7 @@ void rtc_enable(uint8_t e)
 			I2C_Master_BufferWrite(I2C2, databuffer, 2,  I2C_RTC_ADDRESS_WRITE);
 		}
 	}
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 }
 
 /**
@@ -145,8 +145,8 @@ void rtc_enable(uint8_t e)
  */
 uint8_t rtc_read_ram(uint8_t addr)
 {
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	//databuffer[0]=addr;
 	//I2C_Master_BufferWrite(I2C2, databuffer, 1,  I2C_RTC_ADDRESS_WRITE);
 	Buffer_Tx2[0]=addr;
@@ -154,7 +154,7 @@ uint8_t rtc_read_ram(uint8_t addr)
 
 	I2C_Master_BufferRead(I2C2, databuffer, 1,  I2C_RTC_ADDRESS_READ);
 
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 	return (uint8_t) Buffer_Rx2[0];
 }
 
@@ -168,19 +168,19 @@ void rtc_write_ram(uint8_t addr, uint8_t val)
 
 	if (init_rtc == 0)
 		return;
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	Buffer_Tx2[0]=addr;
 	Buffer_Tx2[1]=val;
 	I2C_Master_BufferWrite(I2C2, databuffer, 2,  I2C_RTC_ADDRESS_WRITE);
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 
 }
 
 void rtc_write_init(void)
 {
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	// year
 	Buffer_Tx2[7]=0b00010110;
 	// month
@@ -198,19 +198,19 @@ void rtc_write_init(void)
 	// address
 	Buffer_Tx2[0]=0x00;
 	I2C_Master_BufferWrite(I2C2, databuffer, 8, I2C_RTC_ADDRESS_WRITE);
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 }
 
 void rtc_write_minute(uint8_t minute)
 {
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	// minutes
 	Buffer_Tx2[1]=DecToBcd(minute);
 	// address of minute register
 	Buffer_Tx2[0]=0x01;
 	I2C_Master_BufferWrite(I2C2, databuffer, 2, I2C_RTC_ADDRESS_WRITE);
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 }
 /**
  * @brief read date and time from RTC Device
@@ -222,8 +222,8 @@ void rtc_read(void)
 	uint8_t tmp;
 	if (init_rtc == 0)
 		return;
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	Buffer_Tx2[0]=0x00;
 	I2C_Master_BufferWrite(I2C2, databuffer, 1,  I2C_RTC_ADDRESS_WRITE);
 	I2C_Master_BufferRead(I2C2, databuffer, 7, I2C_RTC_ADDRESS_READ);
@@ -279,7 +279,7 @@ void rtc_read(void)
 	rtc_date.month = BcdToDec(tmp);
 	tmp=databuffer[6];
 	rtc_date.year = BcdToDec(tmp);
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 }
 
 

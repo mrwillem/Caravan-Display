@@ -21,8 +21,8 @@ uint16_t read_voltage(void)
 	{
 		voltage=0;
 		/* 0x08 / 0x09 */
-		while(I2C2_BUSY);
-		I2C2_BUSY=1;
+		while(GL_I2C2_busy);
+		GL_I2C2_busy=1;
 		Buffer_Tx2[0]=0x08;
 		I2C_Master_BufferWrite(I2C2, Buffer_Tx2, 1,  BQ34Z100G1_WRITE_ADDRESS);
 		I2C_Master_BufferRead(I2C2, Buffer_Rx2, 2, BQ34Z100G1_READ_ADDRESS);
@@ -31,7 +31,7 @@ uint16_t read_voltage(void)
 		I2C_Master_BufferWrite(I2C2, Buffer_Tx2, 1,  BQ34Z100G1_WRITE_ADDRESS);
 		I2C_Master_BufferRead(I2C2, Buffer_Rx2, 2, BQ34Z100G1_READ_ADDRESS);
 		current=Buffer_Rx2[0] | (Buffer_Rx2[1]<<8);
-		I2C2_BUSY=0;
+		GL_I2C2_busy=0;
 		return voltage;
 	}
 	else

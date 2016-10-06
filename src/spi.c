@@ -1,7 +1,7 @@
 #include "spi.h"
 #include "hw_config.h"
 
-volatile uint8_t SPI1_BLOCK;
+volatile uint8_t GL_spi1_block;
 #ifdef _USE_SPI_FLASH
 volatile uint32_t flash_rx_address;
 volatile uint32_t flash_tx_address;
@@ -47,7 +47,7 @@ uint8_t SPI1_send(uint8_t n_bytes, uint8_t periph, uint32_t txdata_address, uint
 		GPIO_WriteBit(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, Bit_SET);
 		GPIO_WriteBit(LCD_RS_GPIO_PORT, LCD_RS_PIN, Bit_SET);
 		GPIO_WriteBit(FLASH_CS_GPIO_PORT, FLASH_CS_PIN, Bit_SET);
-		SPI1_BLOCK=SPI_BLOCK_FREE;
+		GL_spi1_block=SPI_BLOCK_FREE;
 		return 1;
 	break;
 	}
@@ -67,7 +67,7 @@ void SPI1_BusInit(void)
 	DMA_InitTypeDef DMA_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 
-	SPI1_BLOCK=SPI_BLOCK_FREE;
+	GL_spi1_block=SPI_BLOCK_FREE;
 
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
@@ -175,28 +175,28 @@ void spi_handleDMA1Ch2Interrupt(void)
 		/* Release Chip Select
 		 *
 		 */
-		switch( SPI1_BLOCK )
+		switch( GL_spi1_block )
 		{
 		case SPI_BLOCK_LCD_WRITE_RAM:
 			/* Release Chip Select of LCD Display */
 			GPIO_WriteBit(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, Bit_SET);
-			SPI1_BLOCK=SPI_BLOCK_FREE;
+			GL_spi1_block=SPI_BLOCK_FREE;
 		break;
 		case SPI_BLOCK_LCD_WRITE_REG:
 			/* Release Chip Select and Register Select of LCD Display */
 			//GPIO_WriteBit(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, Bit_SET);
 			GPIO_WriteBit(LCD_RS_GPIO_PORT, LCD_RS_PIN, Bit_SET);
 			GPIO_WriteBit(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, Bit_SET);
-			SPI1_BLOCK=SPI_BLOCK_FREE;
+			GL_spi1_block=SPI_BLOCK_FREE;
 		break;
 		case SPI_BLOCK_FLASH_WRITE:
 		case SPI_BLOCK_FLASH_DATA:
 			/* Release Chip Select of Flash Device */
 			GPIO_WriteBit(FLASH_CS_GPIO_PORT, FLASH_CS_PIN, Bit_SET);
-			SPI1_BLOCK=SPI_BLOCK_FREE;
+			GL_spi1_block=SPI_BLOCK_FREE;
 		break;
 		case SPI_BLOCK_FLASH_COMMAND:
-			 SPI1_BLOCK=SPI_BLOCK_FLASH_DATA;
+			 GL_spi1_block=SPI_BLOCK_FLASH_DATA;
 			/*
 			 * Initiate the Flash data transfer
 			 */
@@ -222,7 +222,7 @@ void spi_handleDMA1Ch2Interrupt(void)
 			GPIO_WriteBit(LCD_NCS_GPIO_PORT, LCD_NCS_PIN, Bit_SET);
 			GPIO_WriteBit(LCD_RS_GPIO_PORT, LCD_RS_PIN, Bit_SET);
 			GPIO_WriteBit(FLASH_CS_GPIO_PORT, FLASH_CS_PIN, Bit_SET);
-			SPI1_BLOCK=SPI_BLOCK_FREE;
+			GL_spi1_block=SPI_BLOCK_FREE;
 		break;
 		}
 
@@ -231,6 +231,6 @@ void spi_handleDMA1Ch2Interrupt(void)
 	else
 	{
 		/* Should not get here */
-		SPI1_BLOCK=SPI_BLOCK_FAILURE;
+		GL_spi1_block=SPI_BLOCK_FAILURE;
 	}
 }

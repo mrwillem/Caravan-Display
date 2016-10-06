@@ -51,7 +51,7 @@ extern uint8_t Buffer_Tx2[128];
 extern volatile uint8_t Tx_Idx1, Rx_Idx1;
 extern volatile uint8_t Tx_Idx2, Rx_Idx2;
 
-extern volatile uint8_t I2C2_BUSY;
+extern volatile uint8_t GL_I2C2_busy;
 
 /* I2C SPE mask */
 #define CR1_PE_Set              ((uint16_t)0x0001)

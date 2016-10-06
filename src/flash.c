@@ -71,7 +71,7 @@ uint8_t Check_Flash_Page_Free(uint16_t page)
 		 *
 		 */
 		variable=0;
-		while(SPI1_BLOCK != SPI_BLOCK_FREE)
+		while(GL_spi1_block != SPI_BLOCK_FREE)
 		{
 			if(DMA_GetITStatus(DMA1_IT_TC2))
 			{
@@ -111,7 +111,7 @@ uint8_t Check_Flash_Block_Free(uint32_t address)
 	 * a block has
 	 */
 	variable=0;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(DMA_GetITStatus(DMA1_IT_TC2))
 		{
@@ -178,10 +178,10 @@ uint16_t Flash_REMS(void)
 	{
 		flash_command_buffer[i]=0x00;
 	}
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(5, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	i=(0x0000 | flash_command_buffer[4]<<8 | flash_command_buffer[5]);
 	return i;
 
@@ -199,10 +199,10 @@ uint8_t Flash_RES(void)
 		flash_command_buffer[i]=0xFF;
 	}
 	flash_command_buffer[4]=0x00;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(5, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return flash_command_buffer[4];
 
 }
@@ -213,10 +213,10 @@ uint8_t Flash_RES(void)
 uint8_t Flash_WRDI(void)
 {
 	flash_command_buffer[0]=0x04;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(1, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return 0;
 }
 
@@ -227,10 +227,10 @@ uint8_t Flash_WRDI(void)
 uint8_t Flash_WREN(void)
 {
 	flash_command_buffer[0]=0x06;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(1, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return 0;
 }
 
@@ -241,10 +241,10 @@ uint8_t Flash_RDSR1(void)
 {
 	flash_command_buffer[0]=0x05;
 	flash_command_buffer[1]=0x00;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(2, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return flash_command_buffer[1];
 }
 
@@ -255,10 +255,10 @@ uint8_t Flash_RDSR2(void)
 {
 	flash_command_buffer[0]=0x07;
 	flash_command_buffer[1]=0x00;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(2, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return flash_command_buffer[1];
 }
 /*
@@ -268,10 +268,10 @@ uint8_t Flash_RDCR(void)
 {
 	flash_command_buffer[0]=0x35;
 	flash_command_buffer[1]=0x00;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(2, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return flash_command_buffer[1];
 }
 /*
@@ -284,10 +284,10 @@ uint8_t Flash_WRR(uint8_t SR1, uint8_t SR2, uint8_t CR)
 	flash_command_buffer[1]=SR1;
 	flash_command_buffer[2]=CR;
 	flash_command_buffer[3]=SR2;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(4, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return 0;
 }
 
@@ -298,10 +298,10 @@ uint8_t Flash_WRR(uint8_t SR1, uint8_t SR2, uint8_t CR)
 uint8_t Flash_CLSR(void)
 {
 	flash_command_buffer[0]=0x30;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK=SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block=SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(1, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
+	while(GL_spi1_block != SPI_BLOCK_FREE);
 	return 0;
 }
 
@@ -316,8 +316,8 @@ uint8_t Flash_4Read(uint32_t address, uint16_t nbytes, uint32_t rxbuffer_address
 	addresspointer=&flash_command_buffer[1];
 	swap=__REV(address);
 	*addresspointer=swap;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK = SPI_BLOCK_FLASH_COMMAND;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block = SPI_BLOCK_FLASH_COMMAND;
 	SPI1_send(5, SPI_BLOCK_FLASH_COMMAND, (uint32_t)flash_command_buffer, (uint32_t)rxbuffer_address);
 	return 0;
 }
@@ -334,11 +334,11 @@ uint8_t Flash_4Page_Erase(uint32_t address)
 
 	*(flash_command_buffer+1) = __REV(address);
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK = SPI_BLOCK_FLASH_WRITE;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block = SPI_BLOCK_FLASH_WRITE;
 	SPI1_send(5, SPI_BLOCK_FLASH_WRITE, (uint32_t)flash_command_buffer, (uint32_t)flash_rx_buffer);
 	tmpdata=0;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(DMA_GetITStatus(DMA1_IT_TC2))
 		{
@@ -377,7 +377,7 @@ uint8_t Flash_4Write(uint32_t address, uint32_t txbuffer_address)
 	/* find out whether block is free */
 	Flash_4Read(address, 256, (uint32_t) flash_rx_buffer);
 	i=0;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(DMA_GetITStatus(DMA1_IT_TC2))
 		{
@@ -405,11 +405,11 @@ uint8_t Flash_4Write(uint32_t address, uint32_t txbuffer_address)
 
 	*(flash_command_buffer+1) = __REV(address);
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE);
-	SPI1_BLOCK = SPI_BLOCK_FLASH_COMMAND;
+	while(GL_spi1_block != SPI_BLOCK_FREE);
+	GL_spi1_block = SPI_BLOCK_FLASH_COMMAND;
 	SPI1_send(5, SPI_BLOCK_FLASH_COMMAND, (uint32_t)flash_command_buffer, (uint32_t)flash_command_buffer);
 	i=0;
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 		if(DMA_GetITStatus(DMA1_IT_TC2))
 		{

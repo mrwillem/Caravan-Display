@@ -92,8 +92,8 @@ void decode_usb_message(void)
 			/* timezone is a global variable defined in rtc.h */
 			if(strncmp(buffer, "settime", 7) == 0)
 			{
-				while(I2C2_BUSY);
-				I2C2_BUSY=1;
+				while(GL_I2C2_busy);
+				GL_I2C2_busy=1;
 				j=buffer[9]-0x30;
 				j=j*10;
 				j+=(buffer[10]-0x30);
@@ -108,7 +108,7 @@ void decode_usb_message(void)
 				// address
 				Buffer_Tx2[0]=0x00;
 				I2C_Master_BufferWrite(I2C2, Buffer_Tx2, 8, I2C_RTC_ADDRESS_WRITE);
-				I2C2_BUSY=0;
+				GL_I2C2_busy=0;
 				rtc_time.unixtime=synchronize_unixtime();
 				strncpy(SendBuffer, "Time Set", 8);
 				write_bytes=8;
@@ -522,7 +522,7 @@ void usb_cdc_send_battery_data(void)
 			 * a block has
 			 */
 			tmp=0;
-			while(SPI1_BLOCK != SPI_BLOCK_FREE)
+			while(GL_spi1_block != SPI_BLOCK_FREE)
 			{
 				if(DMA_GetITStatus(DMA1_IT_TC2))
 				{

@@ -459,8 +459,8 @@ uint8_t Fill_Battery_Logbuffer(uint8_t *memory)
 	int16_t mAmps;
 	uint16_t remaining;
 	uint16_t temp;
-	while(I2C2_BUSY);
-	I2C2_BUSY=1;
+	while(GL_I2C2_busy);
+	GL_I2C2_busy=1;
 	Buffer_Tx2[0]=0x04;
 	I2C_Master_BufferWrite(I2C2, Buffer_Tx2, 1,  BQ34Z100G1_WRITE_ADDRESS);
 	I2C_Master_BufferRead(I2C2, Buffer_Rx2, 16, BQ34Z100G1_READ_ADDRESS);
@@ -471,7 +471,7 @@ uint8_t Fill_Battery_Logbuffer(uint8_t *memory)
 	remaining=Buffer_Rx2[0] | (Buffer_Rx2[1]<<8);
 	temp=Buffer_Rx2[8] | (Buffer_Rx2[9]<<8);
 
-	I2C2_BUSY=0;
+	GL_I2C2_busy=0;
 	switch(memory[257])
 	{
 	case 0:
@@ -582,7 +582,7 @@ uint32_t Flash_Software_Init(uint32_t *address, uint16_t *page, uint16_t *block 
 			 *
 			 */
 			tmp=0;
-			while(SPI1_BLOCK != SPI_BLOCK_FREE)
+			while(GL_spi1_block != SPI_BLOCK_FREE)
 			{
 				if(DMA_GetITStatus(DMA1_IT_TC2))
 				{

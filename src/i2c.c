@@ -54,7 +54,7 @@ uint8_t Buffer_Tx2[128];
 volatile uint8_t Tx_Idx1 = 0, Rx_Idx1 = 0;
 volatile uint8_t Tx_Idx2 = 0, Rx_Idx2 = 0;
 
-volatile uint8_t I2C2_BUSY = 3;
+volatile uint8_t GL_I2C2_busy = 3;
 
 //extern unsigned char twi_buf[16];
 
@@ -506,7 +506,7 @@ I2C_InitTypeDef I2C_LowLevel_Init(I2C_TypeDef* I2Cx) {
 	}
 	else
 	{
-		I2C2_BUSY=0;
+		GL_I2C2_busy=0;
 	}
 	return I2C_InitStructure;
 }

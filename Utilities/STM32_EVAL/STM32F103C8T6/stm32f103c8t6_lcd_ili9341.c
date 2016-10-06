@@ -1402,10 +1402,10 @@ static void PutPixel(int16_t x, int16_t y)
 static void LCD_WriteRegILI9341(uint8_t LCD_Reg)
 {
 
- 	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+ 	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 	}
-	SPI1_BLOCK = SPI_BLOCK_LCD_WRITE_REG;
+	GL_spi1_block = SPI_BLOCK_LCD_WRITE_REG;
 	LCD_TX_Buffer[0]=(uint8_t)LCD_Reg;
 	SPI1_send(1, SPI_BLOCK_LCD_WRITE_REG, (uint32_t)LCD_TX_Buffer, (uint32_t)LCD_RX_Buffer);
 	//while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
@@ -1451,10 +1451,10 @@ void LCD_WriteReg(uint8_t LCD_Reg, uint16_t LCD_RegValue)
 void LCD_WriteRAM(uint16_t RGB_Code)
 {
 
-	while(SPI1_BLOCK != SPI_BLOCK_FREE)
+	while(GL_spi1_block != SPI_BLOCK_FREE)
 	{
 	}
-	SPI1_BLOCK = SPI_BLOCK_LCD_WRITE_RAM;
+	GL_spi1_block = SPI_BLOCK_LCD_WRITE_RAM;
 	LCD_TX_Buffer[0]=(uint8_t)RGB_Code;
 	SPI1_send(1, SPI_BLOCK_LCD_WRITE_RAM, (uint32_t)LCD_TX_Buffer, (uint32_t)LCD_RX_Buffer);
 	//while(SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_BSY) == SET);
